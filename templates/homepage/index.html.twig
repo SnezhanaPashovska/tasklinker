@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+	<div class="example-wrapper">
+		<h1></h1>
+
+		<div id="projects-container">
+			<article class="card-project">
+				<a href="projet.html">
+					<h2>TaskLinker</h2>
+				</a>
+				<div class="card-project-icons">
+					<a href="projet-edit.html">
+						<i class="fa-solid fa-pen"></i>
+					</a>
+					<a href="#">
+						<i class="fa-solid fa-trash"></i>
+					</a>
+				</div>
+			</article>
+			<article class="card-project">
+				<a href="projet.html">
+					<h2>Site vitrine Les Soeurs Marchand</h2>
+				</a>
+				<div class="card-project-icons">
+					<a href="projet-edit.html">
+						<i class="fa-solid fa-pen"></i>
+					</a>
+					<a href="#">
+						<i class="fa-solid fa-trash"></i>
+					</a>
+				</div>
+			</article>
+			<article class="card-project">
+				<a href="projet-add.html">
+					<i class="fa-solid fa-circle-plus add-project-icon"></i>
+					<h2>Ajouter un projet</h2>
+				</a>
+			</article>
+		</div>
+
+	</div>
+{% endblock %}

@@ -6,10 +6,11 @@ use App\Repository\EmployeeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
-class Employee
+class Employee implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -53,7 +54,7 @@ class Employee
     private Collection $tasks;
 
     #[ORM\ManyToOne(inversedBy: 'employees')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?TimeEntry $timeEntry = null;
 
     public function __construct()
