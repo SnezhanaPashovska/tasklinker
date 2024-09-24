@@ -35,13 +35,12 @@ class EmployeeController extends AbstractController
         
         $employees = $this->entityManager->getRepository(Employee::class)->findAll();
 
-      
         return $this->render('employee/employees.html.twig', [
             'employees' => $employees,
         ]);
     }
 
-    #[Route('/employee/{id}', name: 'employee_edit')]
+    #[Route('/employee/{id}/edit', name: 'employee_edit')]
     public function editEmployee(Request $request, Employee $employee): Response
     {
         // Create the form and handle the request
@@ -52,7 +51,6 @@ class EmployeeController extends AbstractController
             // Update the employee in the database
             $this->entityManager->flush();
            
-
             return $this->redirectToRoute('employees');
         }
 
@@ -60,5 +58,22 @@ class EmployeeController extends AbstractController
             'form' => $form->createView(),
             'employee' => $employee
         ]);
+    }
+
+    #[Route('/employee/{id}/delete', name: 'employee_delete')]
+    public function deleteEmployee(int $id): Response
+    {
+        $employee = $this->entityManager->getRepository(Employee::class)->find($id);
+
+        if (!$employee) {
+            return $this->redirectToRoute('employees');
+        }
+    
+        // Remove the employee entity
+        $this->entityManager->remove($employee);
+        $this->entityManager->flush();
+    
+        // Redirect to the employee list after successful deletion
+        return $this->redirectToRoute('employees');
     }
 }

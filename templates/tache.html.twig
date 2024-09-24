@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des droits d'accès - TaskLinker{% endblock %}
+
+{% block body %}
+<div id="main-container">
+   <nav>
+      <a href="{{ path('app_project') }}" id="logo">
+         <img src="{{ asset('img/logo.png') }}" alt="Logo TaskLinker" />
+      </a>
+      <ul id="main-menu">
+         <li class="active">
+            <a href="{{ path('app_projects') }}">
+               <i class="fa-solid fa-list-check"></i> Projets
+            </a>
+         </li>
+         <li>
+            <a href="{{ path('employees') }}">
+               <i class="fa-regular fa-user"></i> Équipe
+            </a>
+         </li>
+      </ul>
+   </nav>
+   <main>
+      <header>
+         <div id="current-user"></div>
+         <div id="title-page">
+            <h1>Gestion des droits d'accès</h1>
+         </div>
+      </header>
+      <div id="content">
+         <form name="tache" method="post">
+            <div>
+               <label for="tache_titre" class="required">Titre de la tâche</label>
+               <input type="text" id="tache_titre" name="tache[titre]" required="required" value="Gestion des droits d'accès" />
+            </div>
+            <div>
+               <label for="tache_description">Description</label>
+               <textarea id="tache_description" name="tache[description]">Un employé ne peut accéder qu'à ses projets</textarea>
+            </div>
+            <div class="flex-form">
+               <div>
+                  <label for="tache_deadline">Date</label>
+                  <input type="date" id="tache_deadline" name="tache[deadline]" value="2023-09-22" />
+               </div>
+               <div>
+                  <label for="tache_statut" class="required">Statut</label>
+                  <select id="tache_statut" name="tache[statut]">
+                     <option value="13" selected="selected">To Do</option>
+                     <option value="14">Doing</option>
+                     <option value="15">Done</option>
+                  </select>
+               </div>
+            </div>
+            <div>
+               <label for="tache_employe">Membre</label>
+               <select id="tache_employe" name="tache[employe]">
+                  <option value=""></option>
+                  <option value="13">Natalie Dillon</option>
+                  <option value="14">Demi Baker</option>
+               </select>
+            </div>
+            <br>
+            <button class="button button-submit">Modifier</button>
+            <a href="#" class="delete-task">Supprimer la tâche</a>
+         </form>
+      </div>
+   </main>
+</div>
+{% endblock %}

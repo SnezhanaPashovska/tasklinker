@@ -55,6 +55,62 @@ class EmployeeFixtures extends Fixture
                  ->setArrivalDate(new DateTimeImmutable('2024-08-01'));
         $manager->persist($employee3);
 
+        $employee4 = new Employee();
+        $employee4->setName('Olivier')
+                 ->setLastName('Dubois')
+                 ->setEmail('olivier.dubois@example.com')
+                 ->setPassword($this->passwordHasher->hashPassword($employee4, 'password123'))
+                 ->setRole(0)
+                 ->setContract('Freelance')
+                 ->setActive(false)
+                 ->setArrivalDate(new DateTimeImmutable('2022-10-15'));
+        $manager->persist($employee4);
+
+        $employee5 = new Employee();
+        $employee5->setName('Lucie')
+                 ->setLastName('Bernard')
+                 ->setEmail('lucie.bernard@example.com')
+                 ->setPassword($this->passwordHasher->hashPassword($employee5, 'password123'))
+                 ->setRole(0)
+                 ->setContract('CDI')
+                 ->setActive(false)
+                 ->setArrivalDate(new DateTimeImmutable('2022-01-22'));
+        $manager->persist($employee5);
+
+        $employee5 = new Employee();
+        $employee5->setName('Lucie')
+                 ->setLastName('Bernard')
+                 ->setEmail('lucie.bernard@example.com')
+                 ->setPassword($this->passwordHasher->hashPassword($employee5, 'password123'))
+                 ->setRole(0)
+                 ->setContract('CDI')
+                 ->setActive(false)
+                 ->setArrivalDate(new DateTimeImmutable('2022-01-22'));
+        $manager->persist($employee5);
+
+        $employee5 = new Employee();
+        $employee5->setName('Lucie')
+                 ->setLastName('Bernard')
+                 ->setEmail('lucie.bernard@example.com')
+                 ->setPassword($this->passwordHasher->hashPassword($employee5, 'password123'))
+                 ->setRole(0)
+                 ->setContract('CDI')
+                 ->setActive(false)
+                 ->setArrivalDate(new DateTimeImmutable('2022-01-22'));
+        $manager->persist($employee5);
+
+        $employee5 = new Employee();
+        $employee5->setName('Lucie')
+                 ->setLastName('Bernard')
+                 ->setEmail('lucie.bernard@example.com')
+                 ->setPassword($this->passwordHasher->hashPassword($employee5, 'password123'))
+                 ->setRole(0)
+                 ->setContract('CDI')
+                 ->setActive(false)
+                 ->setArrivalDate(new DateTimeImmutable('2022-01-22'));
+        $manager->persist($employee5);
+
+
         $manager->flush();
     }
 }

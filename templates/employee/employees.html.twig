@@ -1,12 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des employés - TaskLinker
+{% block title %}Équipe
 {% endblock %}
 
 {% block body %}
-	<div id="title-page">
-		<h1>Équipe</h1>
-	</div>
+	
 
 	<table id="team-container">
 		<thead>
@@ -36,7 +34,7 @@
 						<a class="button button-edit-team" href="{{ path('employee_edit', { 'id': employee.id }) }}">
 							Éditer
 						</a>
-						<a class="delete-team" href="">
+						<a class="delete-team" href="{{ path('employee_delete', { id: employee.id }) }}">
 							Supprimer
 						</a>
 					</td>

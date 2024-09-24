@@ -1,45 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Éditer l'employé - TaskLinker
+{% block title %}{{ employee.name }} {{ employee.lastName }}
 {% endblock %}
 
 {% block body %}
 
-	<header>
-		<div id="current-user">
-			<div id="title-page">
-				<h1>{{ employee.name }}
-					{{ employee.lastName }}</h1>
-			</div>
-		</header>
-
-		<div id="content">
-			<form name="employee" method="post" action="{{ path('employee_edit', { 'id': employee.id }) }}">
-				<div>
-					<label for="employee_name" class="required">Nom</label>
-					<input type="text" id="employee_name" name="employee[name]" required="required" maxlength="255" value="{{ employee.name }}"/>
-				</div>
-				<div>
-					<label for="employee_last_name" class="required">Prénom</label>
-					<input type="text" id="employee_last_name" name="employee[last_name]" required="required" maxlength="255" value="{{ employee.lastName }}"/>
-				</div>
-				<div>
-					<label for="employee_email" class="required">Email</label>
-					<input type="email" id="employee_email" name="employee[email]" required="required" value="{{ employee.email }}"/>
-				</div>
-				<div class="form-flex">
-					<div>
-						<label for="employee_arrival_date" class="required">Date d'entrée</label>
-						<input type="date" id="employee_arrival_date" name="employee[arrival_date]" required="required" value="{{ employee.arrivalDate|date('Y-m-d') }}"/>
-					</div>
-					<div>
-						<label for="employee_status" class="required">Statut</label>
-						<input type="text" id="employee_status" name="employee[status]" required="required" maxlength="255" value="{{ employee.role }}"/>
-					</div>
-				</div>
-				<button class="button button-submit">Enregistrer</button>
-			</form>
-		</div>
-	</div>
-
-{% endblock %}
+	
+	
+		<form name="employee" method="post" action="{{ path('employee_edit', { 'id': employee.id }) }}">
+			<input
+			type="hidden" name="_token" value="{{ csrf_token('employee_edit') }}">
+			<!-- CSRF token to ensure the form is submitted securely.-->
+			{{ form_start(form) }}
+			{{ form_widget(form) }}
+			<button class="button button-submit">Enregistrer</button>
+			{{ form_end(form) }}
+		</form>
+	
+</div>{% endblock %}

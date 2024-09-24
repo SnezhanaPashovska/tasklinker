@@ -1,0 +1,27 @@
+{# templates/project/new.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau projet
+{% endblock %}
+
+{% block body %}
+
+	<form name="projet" method="post" action="{{ path('add_project') }}">
+    <div>
+        <label for="projet_nom" class="required">Titre du projet</label>
+        <input type="text" id="projet_nom" name="project[name]" required="required"/>
+    </div>
+    <div>
+        <label for="projet_employes">Inviter des membres</label>
+        <select id="projet_employes" name="project[employees][]" multiple="multiple">
+            {% for employee in employees %}
+                <option value="{{ employee.id }}">{{ employee.name }} {{ employee.lastName }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <br>
+    <button class="button button-submit">Continuer</button>
+</form>
+
+
+{% endblock %}
