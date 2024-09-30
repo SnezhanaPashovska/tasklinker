@@ -1,35 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Projets{% endblock %}
+{% block title %}Projets
+{% endblock %}
 
 {% block body %}
-    <div class="example-wrapper">
-        <h1>Liste des Projets</h1>
+	<div class="example-wrapper">
+		<h1>Liste des Projets</h1>
 
-        <div id="projects-container">
-            {% for project in projects %}
-                <article class="card-project">
-                    <a href="{{ path('project_show', { 'id': project.id }) }}">
-                        <h2>{{ project.name }}</h2>
-                    </a>
-                    <div class="card-project-icons">
-                        <a href="{{ path('project_edit', { 'id': project.id }) }}">
-                            <i class="fa-solid fa-pen"></i>
-                        </a>
-                        <a href="#" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">
-                            <i class="fa-solid fa-trash"></i>
-                        </a>
-                    </div>
-                </article>
-            {% else %}
-                <p>Aucun projet trouvé.</p>
-            {% endfor %}
-            <article class="card-project">
-                <a href="{{ path('add_project') }}">
-                    <i class="fa-solid fa-circle-plus add-project-icon"></i>
-                    <h2>Ajouter un projet</h2>
-                </a>
-            </article>
-        </div>
-    </div>
+		<div id="projects-container">
+			{% for project in projects %}
+				<article class="card-project">
+					<a href="{{ path('project_show', { 'id': project.id }) }}">
+						<h2>{{ project.name }}</h2>
+					</a>
+					<div class="card-project-icons">
+						<a href="{{ path('project_edit', { 'id': project.id }) }}">
+							<i class="fa-solid fa-pen"></i>
+						</a>
+						<a href="{{ path('project_delete', { 'id': project.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">
+							<i class="fa-solid fa-trash"></i>
+						</a>
+					</div>
+				</article>
+			{% else %}
+				<p>Aucun projet trouvé.</p>
+			{% endfor %}
+			<article class="card-project">
+				<a href="{{ path('add_project') }}">
+					<i class="fa-solid fa-circle-plus add-project-icon"></i>
+					<h2>Ajouter un projet</h2>
+				</a>
+			</article>
+		</div>
+	</div>
 {% endblock %}

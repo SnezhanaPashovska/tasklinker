@@ -11,8 +11,8 @@
 		<div class="user-list">
 			{% for employee in employees %}
 				<div class="avatar">
-					 {% set initials = (employee.name|first ~ employee.lastName|first)|upper %}{{ initials }}
-					
+					{% set initials = (employee.name|first ~ employee.lastName|first)|upper %}{{ initials }}
+
 				</div>
 			{% endfor %}
 		</div>
@@ -24,69 +24,29 @@
 
 
 	<div id="tasks-container">
-		<div class="task-column">
-			<h2>To Do</h2>
-			<div class="tasks-list">
-				<a class="task" href="#">
-					<h3>Gestion des droits d'accès</h3>
-					<p>Un employé ne peut accéder qu'à ses projets</p>
-					<div class="task-infos">
-						<div class="task-deadline">
-							<i class="fa-regular fa-calendar"></i>
-							22/09/2023
-						</div>
-					</div>
-				</a>
-				<a href="#" class="task-add">
-					+ Ajouter une tâche
-				</a>
+		{% for status, tasks in tasksByStatus %}
+			<div class="task-column">
+				<h2>{{ status }}</h2>
+				<div class="tasks-list">
+					{% for task in tasks %}
+						<a class="task" href="#">
+							<h3>{{ task.title }}</h3>
+							<p>{{ task.description }}</p>
+							<div class="task-infos">
+								<div class="task-deadline">
+									<i class="fa-regular fa-calendar"></i>
+									{{ task.deadline|date('d/m/Y') }}
+								</div>
+							</div>
+						</a>
+					{% endfor %}
+					<a href="{{ path('task_add', { 'projectId': project.id }) }}" class="task-add">
+						+ Ajouter une tâche
+					</a>
+				</div>
 			</div>
-		</div>
-		<div class="task-column">
-			<h2>Doing</h2>
-			<div class="tasks-list">
-				<a class="task" href="#">
-					<h3>Développement de la page employé</h3>
-					<p>Page employé avec liste des employés, édition, modification, suppression et création des employés</p>
-					<div class="task-infos">
-						<div class="task-deadline">
-							<i class="fa-regular fa-calendar"></i>
-							14/09/2023
-						</div>
-						<div class="mini-user">DB</div>
-					</div>
-				</a>
-				<a href="#" class="task-add">
-					+ Ajouter une tâche
-				</a>
-			</div>
-		</div>
-		<div class="task-column">
-			<h2>Done</h2>
-			<div class="tasks-list">
-				<a class="task" href="#">
-					<h3>Développement de la structure globale</h3>
-					<p>Intégrer les maquettes</p>
-					<div class="task-infos">
-						<div class="task-deadline">
-							<i class="fa-regular fa-calendar"></i>
-							03/09/2023
-						</div>
-						<div class="mini-user">DB</div>
-					</div>
-				</a>
-				<a class="task" href="#">
-					<h3>Développement de la page projet</h3>
-					<p>Page projet avec liste des tâches, édition, modification, suppression et création des tâches</p>
-					<div class="task-infos">
-						<div class="mini-user">ND</div>
-					</div>
-				</a>
-				<a href="#" class="task-add">
-					+ Ajouter une tâche
-				</a>
-			</div>
-		</div>
+		{% endfor %}
 	</div>
+
 
 {% endblock %}

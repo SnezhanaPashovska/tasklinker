@@ -1,52 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer une tâche - TaskLinker{% endblock %}
+{% block title %}Créer une tâche - TaskLinker
+{% endblock %}
 
 {% block body %}
-<div id="main-container">
-   <main>
-      <header>
-         <div id="current-user"></div>
-         <div id="title-page">
-            <h1>Créer une tâche</h1>
-         </div>
-      </header>
-      <div id="content">
-         <form name="tache" method="post">
-            <div>
-               <label for="tache_titre" class="required">Titre de la tâche</label>
-               <input type="text" id="tache_titre" name="tache[titre]" required="required" />
-            </div>
-            <div>
-               <label for="tache_description">Description</label>
-               <textarea id="tache_description" name="tache[description]"></textarea>
-            </div>
-            <div class="flex-form">
-               <div>
-                  <label for="tache_deadline">Date</label>
-                  <input type="date" id="tache_deadline" name="tache[deadline]" />
-               </div>
-               <div>
-                  <label for="tache_statut" class="required">Statut</label>
-                  <select id="tache_statut" name="tache[statut]">
-                     <option value="13">To Do</option>
-                     <option value="14">Doing</option>
-                     <option value="15">Done</option>
-                  </select>
-               </div>
-            </div>
-            <div>
-               <label for="tache_employe">Membre</label>
-               <select id="tache_employe" name="tache[employe]">
-                  <option value=""></option>
-                  <option value="13">Natalie Dillon</option>
-                  <option value="14">Demi Baker</option>
-               </select>
-            </div>
-            <br>
-            <button class="button button-submit">Ajouter</button>
-         </form>
-      </div>
-   </main>
-</div>
+	<form name="task" method="post" action="{{ path('task_add', {'projectId': project.id}) }}">
+		<input
+		type="hidden" name="_token" value="{{ path('task_add', { 'projectId': project.id }) }}">
+		<!-- CSRF token to ensure the form is submitted securely.-->
+		{{ form_start(form) }}
+		{{ form_widget(form) }}
+	</br>
+	<button class="button button-submit">Ajouter</button>
+	{{ form_end(form) }}
 {% endblock %}
