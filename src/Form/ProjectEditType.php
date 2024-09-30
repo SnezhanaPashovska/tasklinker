@@ -10,9 +10,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Repository\EmployeeRepository;
 
-class ProjectAddType extends AbstractType
+class ProjectEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -29,12 +28,6 @@ class ProjectAddType extends AbstractType
             },
                 'multiple' => true,
                 'label' => 'Inviter des membres',
-
-                'query_builder' => function (EmployeeRepository $er) {
-                    return $er->createQueryBuilder('e')
-                              ->where('e.active = :active')
-                              ->setParameter('active', true);
-                },
             ])
            
         ;

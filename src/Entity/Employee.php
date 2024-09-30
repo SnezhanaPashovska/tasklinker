@@ -176,6 +176,7 @@ class Employee implements PasswordAuthenticatedUserInterface
     {
         if (!$this->projects->contains($project)) {
             $this->projects->add($project);
+            $project->addEmployee($this);
         }
 
         return $this;

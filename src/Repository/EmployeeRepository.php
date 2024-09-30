@@ -16,6 +16,15 @@ class EmployeeRepository extends ServiceEntityRepository
         parent::__construct($registry, Employee::class);
     }
 
+    public function findActiveEmployees()
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.active = :active')
+            ->setParameter('active', true)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Employee[] Returns an array of Employee objects
     //     */

@@ -5,28 +5,13 @@
 {% endblock %}
 
 {% block body %}
-	<header>
-		<div id="current-user"></div>
-		<div id="title-page">
-			<h1>Nom du projet</h1>
-		</div>
-	</header>
-	<div id="content">
-		<form name="projet" method="post">
-			<div>
-				<label for="projet_nom" class="required">Titre du projet</label>
-				<input type="text" id="projet_nom" name="projet[nom]" required="required" value="TaskLinker"/>
-			</div>
-			<div>
-				<label for="projet_employes">Inviter des membres</label>
-				<select id="projet_employes" name="projet[employes][]" multiple="multiple">
-					<option value="13" selected="selected">Natalie Dillon</option>
-					<option value="14" selected="selected">Demi Baker</option>
-					<option value="15">Marie Dupont</option>
-				</select>
-			</div>
-			<br>
-			<button class="button button-submit">Modifier</button>
-		</form>
-	</div>
+	<form name="project" method="post" action="{{ path('project_edit', { 'id': project.id }) }}">
+		<input
+		type="hidden" name="_token" value="{{ csrf_token('project_edit') }}">
+		<!-- CSRF token to ensure the form is submitted securely.-->
+		{{ form_start(form) }}
+		{{ form_widget(form) }}
+	</br>
+	<button class="button button-submit">Modifier</button>
+	{{ form_end(form) }}
 {% endblock %}

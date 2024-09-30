@@ -18,13 +18,11 @@ class Project
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $start_date = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deadline = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $active = null;
 
     /**
@@ -43,8 +41,11 @@ class Project
     private ?Tag $tags = null;
 
     #[ORM\ManyToOne(inversedBy: 'projects')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Status $status = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $startDate = null;
 
     public function __construct()
     {

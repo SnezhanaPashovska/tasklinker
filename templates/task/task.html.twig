@@ -3,24 +3,7 @@
 {% block title %}Gestion des droits d'accès - TaskLinker{% endblock %}
 
 {% block body %}
-<div id="main-container">
-   <nav>
-      <a href="{{ path('app_project') }}" id="logo">
-         <img src="{{ asset('img/logo.png') }}" alt="Logo TaskLinker" />
-      </a>
-      <ul id="main-menu">
-         <li class="active">
-            <a href="{{ path('app_projects') }}">
-               <i class="fa-solid fa-list-check"></i> Projets
-            </a>
-         </li>
-         <li>
-            <a href="{{ path('employees') }}">
-               <i class="fa-regular fa-user"></i> Équipe
-            </a>
-         </li>
-      </ul>
-   </nav>
+
    <main>
       <header>
          <div id="current-user"></div>
@@ -65,6 +48,5 @@
             <a href="#" class="delete-task">Supprimer la tâche</a>
          </form>
       </div>
-   </main>
 </div>
 {% endblock %}

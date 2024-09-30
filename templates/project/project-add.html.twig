@@ -6,22 +6,14 @@
 
 {% block body %}
 
-	<form name="projet" method="post" action="{{ path('add_project') }}">
-    <div>
-        <label for="projet_nom" class="required">Titre du projet</label>
-        <input type="text" id="projet_nom" name="project[name]" required="required"/>
-    </div>
-    <div>
-        <label for="projet_employes">Inviter des membres</label>
-        <select id="projet_employes" name="project[employees][]" multiple="multiple">
-            {% for employee in employees %}
-                <option value="{{ employee.id }}">{{ employee.name }} {{ employee.lastName }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <br>
-    <button class="button button-submit">Continuer</button>
-</form>
 
-
-{% endblock %}
+	<form name="project" method="post" action="{{ path('add_project') }}">
+		<input
+		type="hidden" name="_token" value="{{ csrf_token('add_project') }}">
+		<!-- CSRF token to ensure the form is submitted securely.-->
+		{{ form_start(form) }}
+		{{ form_widget(form) }}
+	</br>
+	<button class="button button-submit">Continuer</button>
+	{{ form_end(form) }}
+</form>{% endblock %}

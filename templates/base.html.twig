@@ -21,7 +21,7 @@
 				</a>
 				<ul id="main-menu">
 					<li class="active">
-						<a href="">
+						<a href="{{path('app_project')}}">
 							<i class="fa-solid fa-list-check"></i>
 							Projets
 						</a>
@@ -38,8 +38,15 @@
 				<header>
 					<div id="current-user"></div>
 					<div id="title-page">
-						<h1>{% block title %}Default Title{% endblock %}</h1>
+						<div class="flex-header"></div>
+						{% block flex_header %}
+							<h1>
+								{% block title %}Default Title
+								{% endblock %}
+							</h1>
+						{% endblock %}
 					</div>
+
 				</header>
 				<div id="content"> {% block body %}{% endblock %}
 					</div>
