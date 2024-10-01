@@ -15,7 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TaskAddType extends AbstractType
+class TaskEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -55,7 +55,6 @@ class TaskAddType extends AbstractType
                     ->setParameter('project', $project->getId());
             },
             ])
-            
         ;
     }
 

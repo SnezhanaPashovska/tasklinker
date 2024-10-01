@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\TaskAddType;
+use App\Form\TaskEditType;
 use App\Entity\Employee;
 use App\Entity\Project;
 use App\Entity\Task;
@@ -40,6 +41,16 @@ class TaskController extends AbstractController
     if (!$project) {
         throw $this->createNotFoundException('Project not found');
     }
+    $tasks = $entityManager->getRepository(Task::class);
+
+    $tasksByStatus = [];
+    foreach ($tasks as $task) {
+        $status = $task->getStatus();
+        if (!isset($tasksByStatus[$status->getId()])) {
+            $tasksByStatus[$status->getId()] = ['status' => $status, 'tasks' => []];
+        }
+        $tasksByStatus[$status->getId()]['tasks'][] = $task;
+    }
 
     $task = new Task();
     $task->setProjects($project);
@@ -47,6 +58,8 @@ class TaskController extends AbstractController
     // Create and handle the form
     $form = $this->createForm(TaskAddType::class, $task, ['project' => $project]);
     $form->handleRequest($request);
+
+    $employees = $entityManager->getRepository(Employee::class);
     
     
     if ($form->isSubmitted() && $form->isValid()) {
@@ -63,12 +76,66 @@ class TaskController extends AbstractController
         $this->entityManager->persist($task);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('task_add', ['projectId' => $projectId]);
+        return $this->redirectToRoute('project_show', ['id' => $projectId]);
     }
 
     return $this->render('task/task-add.html.twig', [
         'form' => $form->createView(),
        'project' => $project,
+       'employees' => $employees,
+       'tasksByStatus' => $tasksByStatus,
     ]);
 }
+
+#[Route('/task/{id}/edit', name: 'task_edit')]
+public function editTask(Request $request, Task $task): Response
+{
+    // Ensure that the project is being retrieved correctly
+    $project = $task->getProject(); // Make sure this method exists
+
+    // Create the form and handle the request
+    $form = $this->createForm(TaskEditType::class, $task, [
+        'project' => $project, // Pass the project to the form options
+    ]);
+    
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Update the employees related to the task after the form is submitted and valid
+        $employees = $form->get('employees')->getData();
+        foreach ($employees as $employee) {
+            $task->addEmployee($employee);
+            $employee->addTask($task);
+        }
+
+        // Persist the changes to the database
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('project_show', ['id' => $project->getId()]);
+    }
+
+    
+    return $this->render('task/task.html.twig', [
+        'form' => $form->createView(),
+        'project' => $project,
+        'task' => $task
+    ]);
+}
+
+#[Route('/task/{id}/delete', name: 'task_delete')]
+    public function deleteTask(int $id): Response
+    {
+        $task = $this->entityManager->getRepository(Task::class)->find($id);
+
+        if (!$task) {
+            return $this->redirectToRoute('task');
+        }
+    
+        // Remove the employee entity
+        $this->entityManager->remove($task);
+        $this->entityManager->flush();
+    
+        // Redirect to the employee list after successful deletion
+        return $this->redirectToRoute('app_project');
+    }
 }

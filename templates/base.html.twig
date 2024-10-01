@@ -20,13 +20,13 @@
 					<img src="{{ asset('img/logo.png') }}" alt="Logo TaskLinker"/>
 				</a>
 				<ul id="main-menu">
-					<li class="active">
+					<li class="{% if app.request.attributes.get('_route') == 'app_project' %}active{% endif %}">
 						<a href="{{path('app_project')}}">
 							<i class="fa-solid fa-list-check"></i>
 							Projets
 						</a>
 					</li>
-					<li>
+					<li class="{% if app.request.attributes.get('_route') == 'employees' %}active{% endif %}">
 						<a href="{{ path('employees') }}">
 							<i class="fa-regular fa-user"></i>
 							Équipe

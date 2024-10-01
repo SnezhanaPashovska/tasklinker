@@ -29,13 +29,20 @@
 				<h2>{{ status }}</h2>
 				<div class="tasks-list">
 					{% for task in tasks %}
-						<a class="task" href="#">
+						<a class="task" href="{{ path('task_edit', { 'id': task.id }) }}">
 							<h3>{{ task.title }}</h3>
 							<p>{{ task.description }}</p>
 							<div class="task-infos">
 								<div class="task-deadline">
 									<i class="fa-regular fa-calendar"></i>
 									{{ task.deadline|date('d/m/Y') }}
+
+									{% for employee in employees %}
+										<div class="mini-user">
+											{% set initials = (employee.name|first ~ employee.lastName|first)|upper %}{{ initials }}
+
+										</div>
+									{% endfor %}
 								</div>
 							</div>
 						</a>

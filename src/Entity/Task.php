@@ -26,11 +26,11 @@ class Task
     private ?\DateTimeImmutable $deadline = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Project $projects = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Employee $employees = null;
 
     /**
@@ -40,11 +40,11 @@ class Task
     private Collection $tags;
 
     #[ORM\ManyToOne(inversedBy: 'task')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Status $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?TimeEntry $timeEntry = null;
 
     public function __construct()
