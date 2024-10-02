@@ -91,11 +91,11 @@ class TaskController extends AbstractController
 public function editTask(Request $request, Task $task): Response
 {
     // Ensure that the project is being retrieved correctly
-    $project = $task->getProject(); // Make sure this method exists
+    $project = $task->getProjects();
 
     // Create the form and handle the request
     $form = $this->createForm(TaskEditType::class, $task, [
-        'project' => $project, // Pass the project to the form options
+        'project' => $project,
     ]);
     
     $form->handleRequest($request);

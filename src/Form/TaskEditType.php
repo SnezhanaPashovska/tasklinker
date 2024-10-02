@@ -47,8 +47,7 @@ class TaskEditType extends AbstractType
             },
                 'label' => 'Membre',
 
-                'query_builder' => function (EmployeeRepository $er) use ($project) { // Updated to EmployeeRepository
-                // Only return employees assigned to the current project
+                'query_builder' => function (EmployeeRepository $er) use ($project) { 
                 return $er->createQueryBuilder('e')
                     ->innerJoin('e.projects', 'p')
                     ->where('p.id = :project')

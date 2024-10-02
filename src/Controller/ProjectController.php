@@ -28,7 +28,8 @@ class ProjectController extends AbstractController
     #[Route('/project', name: 'app_project')]
     public function index(): Response
     {
-        $projects = $this->entityManager->getRepository(Project::class)->findAll();
+        $projects = $this->entityManager->getRepository(Project::class)
+    ->findBy(['active' => true]);
 
     return $this->render('homepage/index.html.twig', [
         'projects' => $projects,
@@ -40,7 +41,7 @@ class ProjectController extends AbstractController
     {
 
     $project = new Project();
-    
+    $project->setActive(true);
 
     // Create and handle the form
     $form = $this->createForm(ProjectAddType::class, $project);
@@ -109,7 +110,7 @@ class ProjectController extends AbstractController
 
     // Fetch employees associated with the project
     $employees = $project->getEmployees();
-
+    //dd($employees);
     // Fetch tasks associated with the project
     $tasks = $taskRepository->findBy(['projects' => $project]);
 
@@ -121,18 +122,20 @@ class ProjectController extends AbstractController
     ];
 
     foreach ($tasks as $task) {
-        $statusLabel = $task->getStatus()->getLabel(); // Get the status label of the task
+        $statusLabel = $task->getStatus()->getLabel(); 
 
         // Ensure the status exists in the grouping
         if (array_key_exists($statusLabel, $tasksByStatus)) {
             $tasksByStatus[$statusLabel][] = $task;
         }
     }
+    
 
     return $this->render('project/project.html.twig', [
         'project' => $project,
         'employees' => $employees,
-        'tasksByStatus' => $tasksByStatus, // Pass grouped tasks to the template
+        'tasksByStatus' => $tasksByStatus, 
+        //'tasks' => $tasks
     ]);
 }
 
@@ -141,15 +144,15 @@ class ProjectController extends AbstractController
     {
         $project = $this->entityManager->getRepository(Project::class)->find($id);
 
-        if (!$project) {
-            return $this->redirectToRoute('project');
-        }
-    
-        // Remove the employee entity
-        $this->entityManager->remove($project);
-        $this->entityManager->flush();
-    
-        // Redirect to the employee list after successful deletion
+    if (!$project) {
         return $this->redirectToRoute('app_project');
+    }
+
+    // Set the project as inactive instead of deleting
+    $project->setActive(false);
+    $this->entityManager->flush();
+
+    // Redirect to the project list after archiving
+    return $this->redirectToRoute('app_project');
     }
 }
