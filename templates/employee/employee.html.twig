@@ -1,20 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ employee.name }} {{ employee.lastName }}
+{% block title %}
+	{{ employee.name }}
+	{{ employee.lastName }}
 {% endblock %}
 
 {% block body %}
 
-	
-	
-		<form name="employee" method="post" action="{{ path('employee_edit', { 'id': employee.id }) }}">
-			<input
-			type="hidden" name="_token" value="{{ csrf_token('employee_edit') }}">
-			<!-- CSRF token to ensure the form is submitted securely.-->
-			{{ form_start(form) }}
-			{{ form_widget(form) }}
-			<button class="button button-submit">Enregistrer</button>
-			{{ form_end(form) }}
-		</form>
-	
+
+	<form name="employee" method="post" action="{{ path('employee_edit', { 'id': employee.id }) }}">
+		<input
+		type="hidden" name="_token" value="{{ csrf_token('employee_edit') }}">
+		<!-- CSRF token to ensure the form is submitted securely.-->
+		{{ form_start(form) }}
+		{{ form_widget(form) }}
+		<button class="button button-submit">Enregistrer</button>
+		{{ form_end(form) }}
+	</form>
+
 </div>{% endblock %}
