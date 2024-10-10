@@ -11,6 +11,11 @@ html, body {
     font-family: 'Manrope', sans-serif;
 }
 
+.form-row {
+    display: flex;
+    gap: 15px; 
+}
+
 .sf-toolbar {
     position: fixed;
 }
@@ -407,7 +412,7 @@ form input, form select, form textarea {
 }
 
 form {
-    width: 320px;
+    width: 400px;
 }
 
 form label {
