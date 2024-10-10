@@ -28,12 +28,16 @@ class ProjectController extends AbstractController
     #[Route('/project', name: 'app_project')]
     public function index(): Response
     {
-        $projects = $this->entityManager->getRepository(Project::class)
-    ->findBy(['active' => true]);
-
-    return $this->render('homepage/index.html.twig', [
-        'projects' => $projects,
-    ]);
+        // Fetch only active projects
+        $projects = $this->entityManager->getRepository(Project::class)->findBy(['active' => true]);
+    
+        foreach ($projects as $project) {
+            $this->entityManager->refresh($project);
+        }
+    
+        return $this->render('homepage/index.html.twig', [
+            'projects' => $projects,
+        ]);
     }
 
     #[Route('/project/add', name: 'add_project')]

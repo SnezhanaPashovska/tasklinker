@@ -22,7 +22,7 @@ class HomepageController extends AbstractController
     #[Route('/', name: 'homepage')]
     public function index(): Response
     {
-        $projects = $this->entityManager->getRepository(Project::class)->findAll();
+        $projects = $this->entityManager->getRepository(Project::class)->findBy(['active' => true]);
 
         return $this->render('homepage/index.html.twig', [
             'projects' => $projects,

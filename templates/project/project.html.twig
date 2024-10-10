@@ -37,12 +37,12 @@
 									<i class="fa-regular fa-calendar"></i>
 									{{ task.deadline|date('d/m/Y') }}
 
-									
-										<div class="mini-user">
-											{% set initials = (task.employees.name|first ~ task.employees.lastName|first)|upper %}{{ initials }}
 
-										</div>
-									
+									<div class="mini-user">
+										{% set initials = (task.employees.name|first ~ task.employees.lastName|first)|upper %}{{ initials }}
+
+									</div>
+
 								</div>
 							</div>
 						</a>
