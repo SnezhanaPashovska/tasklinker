@@ -30,6 +30,7 @@ class EmployeeEditType extends AbstractType
             ->add('arrival_date', null, [
                 'label' => 'Date d\'entrée',
                 'widget' => 'single_text',
+                'input' => 'datetime_immutable',
             ])
             ->add('contract', null, [
                 'label' => 'Statut',
