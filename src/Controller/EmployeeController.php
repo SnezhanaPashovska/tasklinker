@@ -76,4 +76,12 @@ class EmployeeController extends AbstractController
         // Redirect to the employee list after successful deletion
         return $this->redirectToRoute('employees');
     }
+
+    #[Route('/employee/add', name: 'add_employee')]
+    public function add(Request $request): Response
+    {
+        return $this->render('homepage/main.html.twig', [
+            'controller_name' => 'EmployeeController',
+        ]);
+    }
 }

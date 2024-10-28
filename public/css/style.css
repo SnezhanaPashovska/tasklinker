@@ -514,6 +514,112 @@ form
   font-size: 16px;
 }
 
+/*************New styles**********************************************************************************/
+
+.body-subscription {
+  background-image: url("/img/39dd2699f9bab07f89bae572014c8b5b.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding-bottom: 100px;
+}
+
+.header-subscription {
+  background-color: transparent;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.header-logo {
+  margin-left: 50px;
+  margin-top: 50px;
+}
+
+#content-subscription {
+  border: 1px solid #4c8077;
+  background-color: #4c8077;
+  color: white;
+  border-radius: 30px;
+  width: 40%;
+  justify-self: center;
+  min-height: 650px;
+  max-height: 800px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 80%;
+}
+
+.connections {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.connections a {
+  text-decoration: none;
+}
+
+.connection-link,
+.subscription-link {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background-color: #1c5b50;
+  color: white;
+  padding: 25px 20px 25px 20px;
+  font-size: 13px;
+  margin-top: 10px;
+  width: 45%;
+  justify-self: center;
+  transition: background-color 0.7s ease;
+  font-weight: bolder;
+}
+
+.subscription-link {
+  border: 1px solid transparent;
+  background-color: #b1d89d;
+  color: #4d8077;
+}
+
+.connection-link a {
+  color: white;
+  text-decoration: none;
+}
+
+.connection-link:hover,
+.subscription-link:hover {
+  background-color: #e5f6dc;
+  color: #1c5b50;
+}
+
+.lines-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.horizontal-line {
+  flex-grow: 1;
+  border-bottom: 1px solid white;
+  margin: 0 15px;
+  height: 1px;
+  width: 100px;
+}
+
+/****************New styles**********************************************************************************/
+
 @media (max-width: 992px) {
   nav {
     width: 150px;
