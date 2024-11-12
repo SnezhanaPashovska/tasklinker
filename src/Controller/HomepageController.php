@@ -19,7 +19,22 @@ class HomepageController extends AbstractController
     }
 
 
-    #[Route('/', name: 'homepage')]
+    #[Route('/', name: 'landing_page')]
+    public function main(): Response
+    {
+        
+        return $this->render('homepage/main.html.twig');
+    }
+
+    #[Route('/connection', name: 'login_page')]
+    public function login(): Response
+    {
+        
+        return $this->render('employee/employee-connection.html.twig');
+    }
+
+
+    #[Route('/projects', name: 'homepage')]
     public function index(): Response
     {
         $projects = $this->entityManager->getRepository(Project::class)->findBy(['active' => true]);
@@ -28,4 +43,11 @@ class HomepageController extends AbstractController
             'projects' => $projects,
         ]);
     }
+
+    #[Route('/logout', name: 'logout')]
+public function logout(): void
+{
+    
+}
+    
 }

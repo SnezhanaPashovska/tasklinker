@@ -38,13 +38,13 @@ class Employee implements PasswordAuthenticatedUserInterface
     #[SecurityAssert\UserPassword]
     private ?string $password = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $role = null;
 
     #[ORM\Column(length: 255)]
     private ?string $contract = null;
 
-    #[ORM\Column]
+    #[ORM\Column  (nullable: true)]
     private ?bool $active = null;
 
     #[ORM\Column]

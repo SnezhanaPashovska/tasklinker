@@ -618,6 +618,57 @@ form
   width: 100px;
 }
 
+.button-continue {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background-color: #1c5b50;
+  color: white;
+  padding: 25px 20px 25px 20px;
+  font-size: 13px;
+  margin-top: 10px;
+  width: 100%;
+  justify-self: center;
+  transition: background-color 0.7s ease;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.button-continue:hover {
+  background-color: #e5f6dc;
+  color: #1c5b50;
+}
+
+.creation-compte a {
+  color: white;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+}
+
+.subscription-form h1 {
+  color: white;
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.subscription-form .form label {
+  color: white;
+  text-align: left;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.creation-compte a {
+  color: white;
+  text-decoration: none;
+}
+
+.creation-compte .inscrire {
+  font-weight: bold;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+}
+
 /****************New styles**********************************************************************************/
 
 @media (max-width: 992px) {
