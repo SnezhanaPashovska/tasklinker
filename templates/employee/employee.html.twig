@@ -9,9 +9,6 @@
 
 
 	<form name="employee" method="post" action="{{ path('employee_edit', { 'id': employee.id }) }}">
-		<input
-		type="hidden" name="_token" value="{{ csrf_token('employee_edit') }}">
-		<!-- CSRF token to ensure the form is submitted securely.-->
 
 		<div class="form-group col-md-6">
 			{{ form_row(form.last_name) }}

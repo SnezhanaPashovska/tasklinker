@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class EmployeeEditType extends AbstractType
 {
@@ -24,8 +25,14 @@ class EmployeeEditType extends AbstractType
             ->add('email', null, [
                 'label' => 'Email',
             ])
-            ->add('role', null, [
+            ->add('role', ChoiceType::class, [
+                'choices' => [
+                    'Employe' => 0,   
+                    'Admin' => 1,         
+                ],
                 'label' => 'Rôle',
+                'expanded' => false,     
+                'multiple' => false,     
             ])
             ->add('arrival_date', null, [
                 'label' => 'Date d\'entrée',
@@ -56,6 +63,7 @@ class EmployeeEditType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Employee::class,
+            'csrf_protection' => false
         ]);
     }
 }

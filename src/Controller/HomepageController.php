@@ -35,8 +35,10 @@ class HomepageController extends AbstractController
 
 
     #[Route('/projects', name: 'homepage')]
+    #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
+       
         $projects = $this->entityManager->getRepository(Project::class)->findBy(['active' => true]);
 
         return $this->render('homepage/index.html.twig', [

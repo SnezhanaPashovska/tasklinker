@@ -12,12 +12,16 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
-
     main:
       lazy: true
       provider: app_user_provider
-      
-
+      form_login:
+        login_path: connect_employee
+        check_path: connect_employee
+        username_parameter: email
+        password_parameter: password
+        #default_target_path: /app_project
+    
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -26,7 +30,15 @@ security:
 
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
+
   access_control:
+      - { path: ^/employees, roles: ROLE_ADMIN }
+      - { path: ^/projects, roles: ROLE_USER }
+      - { path: ^/task, roles: ROLE_USER }
+      #- { path: ^/employees, roles: ROLE_ADMIN }
+      # 
+    
+      
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
      

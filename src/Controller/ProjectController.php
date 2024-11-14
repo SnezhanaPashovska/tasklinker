@@ -28,6 +28,7 @@ class ProjectController extends AbstractController
     #[Route('/project', name: 'app_project')]
     public function index(): Response
     {
+        
         // Fetch only active projects
         $projects = $this->entityManager->getRepository(Project::class)->findBy(['active' => true]);
     

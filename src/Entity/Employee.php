@@ -7,13 +7,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
-class Employee implements PasswordAuthenticatedUserInterface
+class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,12 +23,12 @@ class Employee implements PasswordAuthenticatedUserInterface
     
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(groups: ["add_employee"])]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(groups: ["add_employee"])]
     private ?string $last_name = null;
 
     #[ORM\Column(length: 255)]
@@ -38,10 +39,13 @@ class Employee implements PasswordAuthenticatedUserInterface
     #[SecurityAssert\UserPassword]
     private ?string $password = null;
 
+    #[ORM\Column(type: "json")]
+    private array $roles = [];
+
     #[ORM\Column(type: Types::SMALLINT, nullable: true)]
     private ?int $role = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $contract = null;
 
     #[ORM\Column  (nullable: true)]
@@ -125,6 +129,52 @@ class Employee implements PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    ///
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+
+    public function isAdmin(): bool 
+    {
+        return in_array('ROLE_ADMIN', $this->roles);
+    }
+
+    public function setAdmin(bool $admin): static 
+    {
+        $this->roles = $admin ? ['ROLE_ADMIN'] : [];
+
+        return $this;
+    }
+
+    //
 
     public function getRole(): ?int
     {
