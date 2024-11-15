@@ -46,6 +46,12 @@ class HomepageController extends AbstractController
         ]);
     }
 
+    #[Route('/access-denied', name: 'access_denied')]
+    public function accessDenied(): Response
+    {
+        return $this->render('error/access_denied.html.twig');
+    }
+
     #[Route('/logout', name: 'logout')]
 public function logout(): void
 {

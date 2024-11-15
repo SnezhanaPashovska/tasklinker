@@ -1,59 +1,55 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}
-	{{ project.name }}
+    {{ project.name }}
 {% endblock %}
 
 {% block flex_header %}
-	<div class="flex-header">
-		<h1>
-			{{ project.name }}
-		</h1>
-		<div class="user-list">
-			{% for employee in employees %}
-				<div class="avatar">
-					{% set initials = (employee.name|first ~ employee.lastName|first)|upper %}{{ initials }}
-
-				</div>
-			{% endfor %}
-		</div>
-		<a class="button" href="{{ path('project_edit', { 'id': project.id }) }}">Modifier</a>
-	</div>
+    <div class="flex-header">
+        <h1>
+            {{ project.name }}
+        </h1>
+        <div class="user-list">
+            {% for employee in employees %}
+                <div class="avatar">
+                    {% set initials = (employee.name|first ~ employee.lastName|first)|upper %}
+                    {{ initials }}
+                </div>
+            {% endfor %}
+        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="button" href="{{ path('project_edit', { 'id': project.id }) }}">Modifier</a>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block body %}
-
-
-	<div id="tasks-container">
-		{% for status, tasks in tasksByStatus %}
-			<div class="task-column">
-				<h2>{{ status }}</h2>
-				<div class="tasks-list">
-					{% for task in tasks %}
-						<a class="task" href="{{ path('task_edit', { 'id': task.id }) }}">
-							<h3>{{ task.title }}</h3>
-							<p>{{ task.description }}</p>
-							<div class="task-infos">
-								<div class="task-deadline">
-									<i class="fa-regular fa-calendar"></i>
-									{{ task.deadline|date('d/m/Y') }}
-
-
-									<div class="mini-user">
-										{% set initials = (task.employees.name|first ~ task.employees.lastName|first)|upper %}{{ initials }}
-
-									</div>
-
-								</div>
-							</div>
-						</a>
-					{% endfor %}
-					<a href="{{ path('task_add', { 'projectId': project.id }) }}" class="task-add">
-						+ Ajouter une tâche
-					</a>
-				</div>
-			</div>
-		{% endfor %}
-	</div>
-
+    <div id="tasks-container">
+    {% for status, tasks in tasksByStatus %}
+        <div class="task-column">
+            <h2>{{ status }}</h2>
+            <div class="tasks-list">
+                {% for task in tasks %}
+                    <a class="task" 
+                       href="{{ is_granted('ROLE_ADMIN') ? path('task_edit', { 'id': task.id }) : '#' }}" 
+                       {% if not is_granted('ROLE_ADMIN') %}" {% endif %}>
+                        <h3>{{ task.title }}</h3>
+                        <p>{{ task.description }}</p>
+                        <div class="task-infos">
+                            <div class="task-deadline">
+                                <i class="fa-regular fa-calendar"></i>
+                                {{ task.deadline|date('d/m/Y') }}
+                                <div class="mini-user">
+                                    {% set initials = (task.employees.name|first ~ task.employees.lastName|first)|upper %}{{ initials }}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
 
 {% endblock %}
+

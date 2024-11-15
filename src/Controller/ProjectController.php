@@ -14,6 +14,7 @@ use App\Form\ProjectAddType;
 use App\Form\ProjectEditType;
 use App\Repository\TaskRepository;
 
+
 class ProjectController extends AbstractController
 {
 
@@ -26,15 +27,23 @@ class ProjectController extends AbstractController
 
 
     #[Route('/project', name: 'app_project')]
+    #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
         
-        // Fetch only active projects
+        // Get the currently logged-in user (employee)
+    $employee = $this->getUser(); // Assuming Employee is the user entity
+
+    // Check if the user has the 'ROLE_ADMIN' role
+    if ($this->isGranted('ROLE_ADMIN')) {
+        // Fetch all active projects if the user is an admin
         $projects = $this->entityManager->getRepository(Project::class)->findBy(['active' => true]);
-    
-        foreach ($projects as $project) {
-            $this->entityManager->refresh($project);
-        }
+    } else {
+        // Fetch only the active projects assigned to the logged-in employee
+        $projects = $employee->getProjects()->filter(function($project) {
+            return $project->isActive() === true;  // Only show active projects
+        });
+    }
     
         return $this->render('homepage/index.html.twig', [
             'projects' => $projects,
@@ -77,6 +86,7 @@ class ProjectController extends AbstractController
 }
 
 #[Route('/project/{id}/edit', name: 'project_edit')]
+#[IsGranted('ROLE_ADMIN')]
     public function editProject(Request $request, Project $project): Response
     {
         // Create the form and handle the request
@@ -103,6 +113,7 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/project/{id}', name: 'project_show')]
+    
     public function showProject(int $id, TaskRepository $taskRepository): Response
 {
     // Fetch the project by ID
@@ -113,11 +124,20 @@ class ProjectController extends AbstractController
         throw $this->createNotFoundException('Project not found');
     }
 
+    $user = $this->getUser();
     // Fetch employees associated with the project
     $employees = $project->getEmployees();
     //dd($employees);
     // Fetch tasks associated with the project
     $tasks = $taskRepository->findBy(['projects' => $project]);
+
+     // Filter tasks based on the logged-in user
+     if (!$this->isGranted('ROLE_ADMIN')) {
+        // If not an admin, filter tasks assigned to the logged-in user
+        $tasks = array_filter($tasks, function($task) use ($user) {
+            return $task->getEmployees() && $task->getEmployees()->getId() === $user->getId();
+        });
+    }
 
     // Initialize task grouping by status
     $tasksByStatus = [
@@ -127,7 +147,8 @@ class ProjectController extends AbstractController
     ];
 
     foreach ($tasks as $task) {
-        $statusLabel = $task->getStatus()->getLabel(); 
+        $statusLabel = $task->getStatus() ? $task->getStatus()->getLabel() : 'Unknown'; 
+
 
         // Ensure the status exists in the grouping
         if (array_key_exists($statusLabel, $tasksByStatus)) {
@@ -145,6 +166,7 @@ class ProjectController extends AbstractController
 }
 
     #[Route('/project/{id}/delete', name: 'project_delete')]
+    #[IsGranted('ROLE_ADMIN')]
     public function deleteProject(int $id): Response
     {
         $project = $this->entityManager->getRepository(Project::class)->find($id);

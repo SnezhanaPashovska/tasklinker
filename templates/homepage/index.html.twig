@@ -13,24 +13,30 @@
 					<a href="{{ path('project_show', { 'id': project.id }) }}">
 						<h2>{{ project.name }}</h2>
 					</a>
-					<div class="card-project-icons">
-						<a href="{{ path('project_edit', { 'id': project.id }) }}">
-							<i class="fa-solid fa-pen"></i>
-						</a>
-						<a href="{{ path('project_delete', { 'id': project.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">
-							<i class="fa-solid fa-trash"></i>
-						</a>
+					<div
+						class="card-project-icons">
+						{# Check if the user has 'ROLE_ADMIN' to show the edit and delete icons #}
+						{% if is_granted('ROLE_ADMIN') %}
+							<a href="{{ path('project_edit', { 'id': project.id }) }}">
+								<i class="fa-solid fa-pen"></i>
+							</a>
+							<a href="{{ path('project_delete', { 'id': project.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">
+								<i class="fa-solid fa-trash"></i>
+							</a>
+						{% endif %}
 					</div>
 				</article>
 			{% else %}
 				<p>Aucun projet trouvé.</p>
 			{% endfor %}
-			<article class="card-project">
-				<a href="{{ path('add_project') }}">
-					<i class="fa-solid fa-circle-plus add-project-icon"></i>
-					<h2>Ajouter un projet</h2>
-				</a>
-			</article>
+			{% if is_granted('ROLE_ADMIN') %}
+				<article class="card-project">
+					<a href="{{ path('add_project') }}">
+						<i class="fa-solid fa-circle-plus add-project-icon"></i>
+						<h2>Ajouter un projet</h2>
+					</a>
+				</article>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

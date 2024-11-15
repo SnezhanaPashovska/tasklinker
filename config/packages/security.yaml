@@ -18,8 +18,12 @@ security:
       form_login:
         login_path: connect_employee
         check_path: connect_employee
+        default_target_path: app_project
         username_parameter: email
         password_parameter: password
+      logout:
+        path: app_logout
+        target: /
         #default_target_path: /app_project
     
       # activate different ways to authenticate
@@ -35,10 +39,11 @@ security:
       - { path: ^/employees, roles: ROLE_ADMIN }
       - { path: ^/projects, roles: ROLE_USER }
       - { path: ^/task, roles: ROLE_USER }
+      - { path: ^/task/\d+/edit, roles: ROLE_ADMIN }
       #- { path: ^/employees, roles: ROLE_ADMIN }
       # 
     
-      
+  access_denied_url: /access-denied    
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
      

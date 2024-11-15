@@ -185,6 +185,13 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->role = $role;
 
+    
+    $this->roles = match ($role) {
+        0 => ['ROLE_USER'],
+        1 => ['ROLE_ADMIN'],
+        default => ['ROLE_USER'],
+    };
+
         return $this;
     }
 

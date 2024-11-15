@@ -133,7 +133,9 @@ class EmployeeController extends AbstractController
             $this->entityManager->persist($employee);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_project');
+            $this->addFlash('success', 'Compte créé avec succès !');
+
+            return $this->redirectToRoute('connect_employee');
         }
 
         return $this->render('employee/employee-add.html.twig', [
@@ -141,5 +143,9 @@ class EmployeeController extends AbstractController
         ]);
     }
 
-    
+    #[Route('/deconnexion', name: 'app_logout')]
+    public function logout(): never
+    {
+        // On ne passera jamais ici, Symfony gère la déconnexion pour nous.
+    }
 }

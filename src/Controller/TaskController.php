@@ -88,8 +88,18 @@ class TaskController extends AbstractController
 }
 
 #[Route('/task/{id}/edit', name: 'task_edit')]
+#[IsGranted('ROLE_ADMIN')]
 public function editTask(Request $request, Task $task): Response
 {
+
+    // Check if the user is an admin or if the user is assigned to the task
+    $user = $this->getUser();
+
+    // Allow access only if the user is an admin or is the assigned employee for the task
+    if (!$this->isGranted('ROLE_ADMIN') && $task->getEmployees() !== $user) {
+        throw $this->createAccessDeniedException('You do not have permission to edit this task');
+    }
+
     // Ensure that the project is being retrieved correctly
     $project = $task->getProjects();
 
