@@ -33,6 +33,7 @@ class TaskController extends AbstractController
     }
 
     #[Route('/task/add/{projectId}', name: 'task_add')]
+    #[IsGranted('acces_project', 'id')]
     public function add(Request $request, int $projectId, EntityManagerInterface $entityManager): Response
     {
 
@@ -133,6 +134,7 @@ public function editTask(Request $request, Task $task): Response
 }
 
 #[Route('/task/{id}/delete', name: 'task_delete')]
+#[IsGranted('acces_task', 'id')]
     public function deleteTask(int $id): Response
     {
         $task = $this->entityManager->getRepository(Task::class)->find($id);

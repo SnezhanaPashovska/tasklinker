@@ -24,8 +24,10 @@ security:
       logout:
         path: app_logout
         target: /
-        #default_target_path: /app_project
-    
+      two_factor:
+        auth_form_path: 2fa_connect
+        check_path: 2fa_connect_check
+        default_target_path: app_project
       # activate different ways to authenticate
       # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -40,8 +42,7 @@ security:
       - { path: ^/projects, roles: ROLE_USER }
       - { path: ^/task, roles: ROLE_USER }
       - { path: ^/task/\d+/edit, roles: ROLE_ADMIN }
-      #- { path: ^/employees, roles: ROLE_ADMIN }
-      # 
+      - { path: ^/2fa, role: IS_AUTHENTICATED_2FA_IN_PROGRESS }
     
   access_denied_url: /access-denied    
         # - { path: ^/admin, roles: ROLE_ADMIN }

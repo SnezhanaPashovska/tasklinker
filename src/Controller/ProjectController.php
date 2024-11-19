@@ -30,9 +30,8 @@ class ProjectController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function index(): Response
     {
-        
         // Get the currently logged-in user (employee)
-    $employee = $this->getUser(); // Assuming Employee is the user entity
+    $employee = $this->getUser(); 
 
     // Check if the user has the 'ROLE_ADMIN' role
     if ($this->isGranted('ROLE_ADMIN')) {
@@ -113,6 +112,7 @@ class ProjectController extends AbstractController
     }
 
     #[Route('/project/{id}', name: 'project_show')]
+    #[IsGranted('acces_project', 'id')]
     
     public function showProject(int $id, TaskRepository $taskRepository): Response
 {

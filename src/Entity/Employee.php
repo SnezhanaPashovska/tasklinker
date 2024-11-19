@@ -10,11 +10,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
-
 use Doctrine\ORM\Mapping as ORM;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
-class Employee implements UserInterface, PasswordAuthenticatedUserInterface
+class Employee implements UserInterface, TwoFactorInterface, PasswordAuthenticatedUserInterface, GoogleAuthenticatorInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -48,8 +49,14 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $contract = null;
 
-    #[ORM\Column  (nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?bool $active = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private bool $googleAuthenticatorEnabled = true;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $googleAuthenticatorSecret = null;
 
     #[ORM\Column]
     #[Assert\Type(\DateTimeImmutable::class)]
@@ -75,6 +82,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->projects = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -130,13 +138,50 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    ///
+    ///////////////////////////////
 
+    public function getTwoFactorSecret(): string
+    {
+        // Return the secret key used for 2FA
+        return $this->getGoogleAuthenticatorSecret();
+    }
+
+    public function setTwoFactorSecret(string $secret): self
+    {
+        $this->setGoogleAuthenticatorSecret($secret);
+        return $this;
+    }
+//
+public function checkCode(TwoFactorInterface $user, string $code): bool
+{
+   
+    $googleAuthenticator = new \Google\Authenticator\GoogleAuthenticator();
+    return $googleAuthenticator->checkCode($user->getGoogleAuthenticatorSecret(), $code);
+}
+
+public function getQRContent(TwoFactorInterface $user): string
+{
+    
+    return \Google\Authenticator\GoogleAuthenticator::getQRCodeGoogleUrl(
+        'TaskLinker',
+        $user->getGoogleAuthenticatorSecret(),
+        'TaskLinker'
+    );
+}
+
+public function generateSecret(): string
+{
+    $googleAuthenticator = new \Google\Authenticator\GoogleAuthenticator();
+    $secret = $googleAuthenticator->generateSecret();
+    $this->googleAuthenticatorSecret = $secret;
+
+    return $secret;
+}
+//
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
-
 
     public function getRoles(): array
     {
@@ -157,7 +202,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
 
@@ -173,8 +217,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    //
 
     public function getRole(): ?int
     {
@@ -297,4 +339,25 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getGoogleAuthenticatorSecret(): ?string
+    {
+        return $this->googleAuthenticatorSecret;
+    }
+
+    public function setGoogleAuthenticatorSecret(?string $secret): void
+    {
+        $this->googleAuthenticatorSecret = $secret;
+    }
+
+    public function isGoogleAuthenticatorEnabled(): bool
+    {
+        return !empty($this->googleAuthenticatorSecret);
+    }
+ 
+    public function getGoogleAuthenticatorUsername(): string
+    {
+        return $this->email;
+    } 
+
 }
