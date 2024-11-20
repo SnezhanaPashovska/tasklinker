@@ -6,8 +6,8 @@ use App\Repository\TaskRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
@@ -31,7 +31,7 @@ class Task
     #[Assert\Type(type: \DateTimeImmutable::class)]
     private ?\DateTimeImmutable $deadline = null;
 
-    #[ORM\ManyToOne(inversedBy: 'tasks')]
+    #[ORM\ManyToOne(inversedBy : 'tasks')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Project $projects = null;
 

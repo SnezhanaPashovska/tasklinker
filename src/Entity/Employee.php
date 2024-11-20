@@ -6,13 +6,13 @@ use App\Repository\EmployeeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
-use Doctrine\ORM\Mapping as ORM;
-use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
-use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 class Employee implements UserInterface, TwoFactorInterface, PasswordAuthenticatedUserInterface, GoogleAuthenticatorInterface
@@ -20,8 +20,7 @@ class Employee implements UserInterface, TwoFactorInterface, PasswordAuthenticat
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    
-    
+
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -53,7 +52,7 @@ class Employee implements UserInterface, TwoFactorInterface, PasswordAuthenticat
     private ?bool $active = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private bool $googleAuthenticatorEnabled = true;
+    private bool $googleAuthenticatorEnabled = false;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $googleAuthenticatorSecret = null;
@@ -65,7 +64,7 @@ class Employee implements UserInterface, TwoFactorInterface, PasswordAuthenticat
     /**
      * @var Collection<int, Project>
      */
-    #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'employees')]
+    #[ORM\ManyToMany(targetEntity : Project::class, inversedBy: 'employees')]
     private Collection $projects;
 
     /**
@@ -82,7 +81,7 @@ class Employee implements UserInterface, TwoFactorInterface, PasswordAuthenticat
     {
         $this->projects = new ArrayCollection();
         $this->tasks = new ArrayCollection();
-        
+
     }
 
     public function getId(): ?int
@@ -138,11 +137,8 @@ class Employee implements UserInterface, TwoFactorInterface, PasswordAuthenticat
         return $this;
     }
 
-    ///////////////////////////////
-
     public function getTwoFactorSecret(): string
     {
-        // Return the secret key used for 2FA
         return $this->getGoogleAuthenticatorSecret();
     }
 
@@ -151,33 +147,31 @@ class Employee implements UserInterface, TwoFactorInterface, PasswordAuthenticat
         $this->setGoogleAuthenticatorSecret($secret);
         return $this;
     }
-//
-public function checkCode(TwoFactorInterface $user, string $code): bool
-{
-   
-    $googleAuthenticator = new \Google\Authenticator\GoogleAuthenticator();
-    return $googleAuthenticator->checkCode($user->getGoogleAuthenticatorSecret(), $code);
-}
+    public function checkCode(TwoFactorInterface $user, string $code): bool
+    {
 
-public function getQRContent(TwoFactorInterface $user): string
-{
-    
-    return \Google\Authenticator\GoogleAuthenticator::getQRCodeGoogleUrl(
-        'TaskLinker',
-        $user->getGoogleAuthenticatorSecret(),
-        'TaskLinker'
-    );
-}
+        $googleAuthenticator = new \Google\Authenticator\GoogleAuthenticator();
+        return $googleAuthenticator->checkCode($user->getGoogleAuthenticatorSecret(), $code);
+    }
 
-public function generateSecret(): string
-{
-    $googleAuthenticator = new \Google\Authenticator\GoogleAuthenticator();
-    $secret = $googleAuthenticator->generateSecret();
-    $this->googleAuthenticatorSecret = $secret;
+    public function getQRContent(TwoFactorInterface $user): string
+    {
 
-    return $secret;
-}
-//
+        return \Google\Authenticator\GoogleAuthenticator::getQRCodeGoogleUrl(
+            'TaskLinker',
+            $user->getGoogleAuthenticatorSecret(),
+            'TaskLinker'
+        );
+    }
+
+    public function generateSecret(): string
+    {
+        $googleAuthenticator = new \Google\Authenticator\GoogleAuthenticator();
+        $secret = $googleAuthenticator->generateSecret();
+        $this->googleAuthenticatorSecret = $secret;
+
+        return $secret;
+    }
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
@@ -186,7 +180,6 @@ public function generateSecret(): string
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -199,19 +192,16 @@ public function generateSecret(): string
         return $this;
     }
 
-
     public function eraseCredentials(): void
     {
-        // $this->plainPassword = null;
     }
 
-
-    public function isAdmin(): bool 
+    public function isAdmin(): bool
     {
         return in_array('ROLE_ADMIN', $this->roles);
     }
 
-    public function setAdmin(bool $admin): static 
+    public function setAdmin(bool $admin): static
     {
         $this->roles = $admin ? ['ROLE_ADMIN'] : [];
 
@@ -227,12 +217,11 @@ public function generateSecret(): string
     {
         $this->role = $role;
 
-    
-    $this->roles = match ($role) {
-        0 => ['ROLE_USER'],
-        1 => ['ROLE_ADMIN'],
-        default => ['ROLE_USER'],
-    };
+        $this->roles = match ($role) {
+            0 => ['ROLE_USER'],
+            1 => ['ROLE_ADMIN'],
+            default => ['ROLE_USER'],
+        };
 
         return $this;
     }
@@ -319,7 +308,6 @@ public function generateSecret(): string
     public function removeTask(Task $task): static
     {
         if ($this->tasks->removeElement($task)) {
-            // set the owning side to null (unless already changed)
             if ($task->getEmployees() === $this) {
                 $task->setEmployees(null);
             }
@@ -354,10 +342,10 @@ public function generateSecret(): string
     {
         return !empty($this->googleAuthenticatorSecret);
     }
- 
+
     public function getGoogleAuthenticatorUsername(): string
     {
         return $this->email;
-    } 
+    }
 
 }

@@ -4,18 +4,15 @@
 
 	<h1>Confirmez votre connexion</h1>
 
-	<form action="{{ path('2fa_connect') }}" method="POST">
+	<form action="{{ path('2fa_login') }}" method="POST">
 		<p>Scannez le QR Code avec l'application Google Auth et entrez le code :</p>
 		<img src="{{ path('2fa_qrcode') }}" alt="QR Code Google Auth">
-
-
 		<div>
 			<label for="2fa_code">Code Google Auth :</label>
 			<input type="text" name="2fa_code" id="2fa_code" required/>
 		</div>
 		<button class="button button-submit">Se connecter</button>
 	</form>
-
 	{% for message in app.flashes('error') %}
 		<div class="alert alert-danger">{{ message }}</div>
 	{% endfor %}

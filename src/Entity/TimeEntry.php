@@ -23,13 +23,13 @@ class TimeEntry
 
     #[ORM\Column]
     #[Assert\NotBlank]
-    #[Assert\Type(type: \DateTimeImmutable::class)]
+    #[Assert\Type(type : \DateTimeImmutable::class)]
     private ?\DateTimeImmutable $end_date = null;
 
     /**
      * @var Collection<int, Employee>
      */
-    #[ORM\OneToMany(targetEntity: Employee::class, mappedBy: 'timeEntry')]
+    #[ORM\OneToMany(targetEntity : Employee::class, mappedBy: 'timeEntry')]
     private Collection $employees;
 
     /**

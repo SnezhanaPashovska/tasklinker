@@ -3,14 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Employee;
-use App\Entity\Project;
 use App\Entity\Status;
-use App\Entity\Tag;
 use App\Entity\Task;
-use App\Entity\TimeEntry;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Doctrine\ORM\EntityRepository; 
 use App\Repository\EmployeeRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,31 +26,30 @@ class TaskAddType extends AbstractType
 
             ->add('deadline', null, [
                 'widget' => 'single_text',
-                'label' => 'Date'
+                'label' => 'Date',
             ])
-            
-            
+
             ->add('status', EntityType::class, [
                 'class' => Status::class,
                 'choice_label' => 'label',
-                'label' => 'Statut'
+                'label' => 'Statut',
             ])
 
             ->add('employees', EntityType::class, [
                 'class' => Employee::class,
                 'choice_label' => function (Employee $employee) {
-                return $employee->getName() . ' ' . $employee->getLastName();
-            },
+                    return $employee->getName() . ' ' . $employee->getLastName();
+                },
                 'label' => 'Membre',
 
-                'query_builder' => function (EmployeeRepository $er) use ($project) { 
-                return $er->createQueryBuilder('e')
-                    ->innerJoin('e.projects', 'p')
-                    ->where('p.id = :project')
-                    ->setParameter('project', $project->getId());
-            },
+                'query_builder' => function (EmployeeRepository $er) use ($project) {
+                    return $er->createQueryBuilder('e')
+                        ->innerJoin('e.projects', 'p')
+                        ->where('p.id = :project')
+                        ->setParameter('project', $project->getId());
+                },
             ])
-            
+
         ;
     }
 

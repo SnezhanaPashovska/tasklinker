@@ -3,54 +3,33 @@
 namespace App\Form;
 
 use App\Entity\Employee;
-use App\Entity\Project;
-use App\Entity\TimeEntry;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Repository\EmployeeRepository;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class EmployeeConnectType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            
-        ->add('email', EmailType::class, [
-            'label' => 'E-mail',
-            'constraints' => [
-                new Assert\NotBlank(),
-                new Assert\Email(),
-            ],
-        ])
-        ->add('password', PasswordType::class, [
-            'invalid_message' => 'Incorrect password.',
-            'required' => true,
-            'constraints' => [
-                new Assert\NotBlank(),
-            ],
-        ]);
-            /*->add('role')
-            ->add('contract')
-            ->add('active')
-            ->add('arrival_date', null, [
-                'widget' => 'single_text',
+
+            ->add('email', EmailType::class, [
+                'label' => 'E-mail',
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Email(),
+                ],
             ])
-            ->add('projects', EntityType::class, [
-                'class' => Project::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
-            ->add('timeEntry', EntityType::class, [
-                'class' => TimeEntry::class,
-                'choice_label' => 'id',
-            ])*/
-        ;
+            ->add('password', PasswordType::class, [
+                'invalid_message' => 'Incorrect password.',
+                'required' => true,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

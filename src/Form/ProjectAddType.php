@@ -4,13 +4,11 @@ namespace App\Form;
 
 use App\Entity\Employee;
 use App\Entity\Project;
-use App\Entity\Status;
-use App\Entity\Tag;
+use App\Repository\EmployeeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Repository\EmployeeRepository;
 
 class ProjectAddType extends AbstractType
 {
@@ -21,22 +19,21 @@ class ProjectAddType extends AbstractType
                 'label' => 'Titre du projet',
             ])
 
-            
             ->add('employees', EntityType::class, [
                 'class' => Employee::class,
                 'choice_label' => function (Employee $employee) {
-                return $employee->getName() . ' ' . $employee->getLastName();
-            },
+                    return $employee->getName() . ' ' . $employee->getLastName();
+                },
                 'multiple' => true,
                 'label' => 'Inviter des membres',
 
                 'query_builder' => function (EmployeeRepository $er) {
                     return $er->createQueryBuilder('e')
-                              ->where('e.active = :active')
-                              ->setParameter('active', true);
+                        ->where('e.active = :active')
+                        ->setParameter('active', true);
                 },
             ])
-           
+
         ;
     }
 

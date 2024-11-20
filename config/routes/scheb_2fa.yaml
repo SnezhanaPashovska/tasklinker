@@ -4,4 +4,4 @@
         _controller: "scheb_two_factor.form_controller::form"
 
 2fa_login_check:
-    path: /2fa_checka
+    path: /2fa_check

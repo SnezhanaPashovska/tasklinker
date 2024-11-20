@@ -5,8 +5,8 @@ namespace App\Entity;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
@@ -20,12 +20,11 @@ class Project
     #[Assert\NotBlank]
     private ?string $name = null;
 
-
     #[ORM\Column(nullable: true)]
     #[Assert\Type(\DateTimeImmutable::class)]
     private ?\DateTimeImmutable $deadline = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable : true)]
     private ?bool $active = null;
 
     /**
